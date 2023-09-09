@@ -2,7 +2,7 @@ import { loadJSON, saveJSON } from '@/libs/file-operation';
 import { scrapeWebPages } from '@/libs/scraper';
 import { NextResponse } from 'next/server'
 
-export async function GET(){
+export async function POST(){
     try {
         const dataServer = await loadJSON('list.json');
         const arrRes = await scrapeWebPages(dataServer.data);

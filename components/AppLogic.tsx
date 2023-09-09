@@ -13,7 +13,16 @@ type PostData = {
 type PagesToScrape = PostData[];
 
 async function getApi(endPoint: string) {
-    const res = await fetch('/api/'+ endPoint , { cache: 'no-store' })
+    
+    const res = await fetch('/api/'+ endPoint  , {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"data":"getapi"}),
+        cache: 'no-store',
+        next: { tags: ['jsondata'], revalidate: 5 }
+      });
     if (!res.ok) {
         throw new Error('Failed to fetch data')
     }
@@ -22,12 +31,16 @@ async function getApi(endPoint: string) {
 
 async function scrapeData(postData: PagesToScrape): Promise<{'data': [], 'error': boolean}> {
     try {
-      const response = await fetch('/api/scrape', {
+      
+
+      const response = await fetch('/api/scrape' , {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(postData),
+        cache: 'no-store',
+        next: { tags: ['jsondata'], revalidate: 5 }
       });
   
       if (response.ok) {
@@ -46,12 +59,16 @@ async function scrapeData(postData: PagesToScrape): Promise<{'data': [], 'error'
 
 async function updateDataToServer(data: string) {
     try {
+        
+
         const response = await fetch('/api/data/save', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: data,
+          cache: 'no-store',
+          next: { tags: ['jsondata'], revalidate: 5 }
         });
     
         if (response.ok) {
