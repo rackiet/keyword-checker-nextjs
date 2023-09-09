@@ -14,7 +14,10 @@ function isKeywordFound(allText: string, keyword: string): boolean {
   export async function scrapeWebPages(pagesToScrape: { url: string; keyword: string }[]) {
     const results = [];
     
-    const browser = await puppeteer.launch({ headless: SEMBUNYI });
+    const browser = await puppeteer.launch({
+        headless: SEMBUNYI, 
+        args: ['--no-sandbox'],
+      });
 
     try {
       
